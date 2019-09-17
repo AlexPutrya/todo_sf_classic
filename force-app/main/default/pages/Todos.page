@@ -1,0 +1,25 @@
+<apex:page controller="TodoController" docType="html-5.0">
+    <apex:pageBlock title="Todo List" id="todoPage">
+        <apex:form>
+            <apex:input value="{!selectedDate}" type="date">
+                <apex:actionSupport event="onchange" reRender="todoPage"/>
+            </apex:input>
+            <br></br>
+            <apex:inputText value="{!taskText}"/>
+            <apex:commandButton action="{!addTask}" value="Add" reRender="todoPage"/>
+                <apex:repeat value="{!todos}" var="todo">
+                    <div>
+                        <apex:inputCheckbox value="{!todo.Done__c}">
+                                <apex:actionSupport event="onchange" action="{!changeDone}" reRender="todoPage">
+                                        <apex:param name="taskId" value="{!todo.Id}" assignTo = "{!taskId}"/>
+                                </apex:actionSupport>
+                        </apex:inputCheckbox>
+                        <span style="{! IF(todo.Done__c,'text-decoration: line-through', '')}"> {!todo.Description__c} </span>
+                        <apex:commandLink action="{!deleteTask}" value="Del" id="deleteLink">
+                                <apex:param name="taskId" value="{!todo.Id}" assignTo = "{!taskId}"/>
+                        </apex:commandLink>
+                    </div>
+                </apex:repeat>
+        </apex:form>
+    </apex:pageBlock>
+</apex:page>
