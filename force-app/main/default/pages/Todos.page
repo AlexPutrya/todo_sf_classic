@@ -1,37 +1,55 @@
 <apex:page controller="TodoController" docType="html-5.0" standardStylesheets="false">
     <apex:slds/>
     <div class="slds-scope">
-        <div class="slds-grid slds-wrap">
-            <div class="slds-col  slds-size_5-of-12">
-                <apex:pageBlock title="Todo List" id="todoPage">
+        <div class="slds-grid slds-wrap slds-m-bottom_x-small">
+            <div class="slds-col slds-size_2-of-12">
+            </div>
+            <div class="slds-col  slds-size_8-of-12">
+                <div class="slds-page-header">
+                    <div class="slds-page-header__name-title">
+                        <h1>
+                            <span class="slds-page-header__title slds-truncate" title="Todo list">Todo list</span>
+                        </h1>
+                    </div>
+                </div>
+                <apex:pageBlock id="todoPage">
                     <apex:form>
-                        <apex:input value="{!selectedDate}" type="date" styleClass="slds-input">
-                            <apex:actionSupport event="onchange" reRender="todoPage"/>
-                        </apex:input>
-                        <br></br>
-                        <apex:inputText value="{!taskText}" styleClass="slds-input"/>
-                        <apex:commandButton action="{!addTask}" value="Add" reRender="todoPage" styleClass="slds-button slds-button_outline-brand slds-button_stretch"/>
-                            <div styleClass="todoBlock"> 
+                        <div class="slds-form-element slds-m-top_x-small">
+                            <label class="slds-form-element__label" for="text-input-id-1">Pick date</label>
+                            <div class="slds-form-element__control">
+                                <apex:input value="{!selectedDate}" type="date" styleClass="slds-input">
+                                    <apex:actionSupport event="onchange" reRender="todoPage"/>
+                                </apex:input>
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-id-1">Enter todo</label>
+                            <apex:inputText value="{!taskText}" styleClass="slds-input"/>
+                        </div>
+                        <apex:commandButton action="{!addTask}" value="Add" reRender="todoPage" styleClass="slds-button slds-button_outline-brand slds-button_stretch slds-m-top_x-small"/>
+                            <div class="slds-m-top_x-small"> 
                                 <apex:repeat value="{!todos}" var="todo">
                                     <div>
                                         <div class="slds-card slds-has-bottom-magnet">
-                                                <div class="slds-p-around_medium">
-                                                        <apex:inputCheckbox value="{!todo.Done__c}">
-                                                                <apex:actionSupport event="onchange" action="{!changeDone}" reRender="todoPage">
-                                                                        <apex:param name="taskId" value="{!todo.Id}" assignTo = "{!taskId}"/>
-                                                                </apex:actionSupport>
-                                                        </apex:inputCheckbox>
-                                                        <div class="slds-align_absolute-center slds-text-heading_large">
-                                                                <span style="{! IF(todo.Done__c,'text-decoration: line-through', '')}"> {!todo.Description__c} </span>
-                                                        </div>
+                                            <div class="slds-p-around_medium slds-align_absolute-center">
+                                                <apex:inputCheckbox value="{!todo.Done__c}">
+                                                        <apex:actionSupport event="onchange" action="{!changeDone}" reRender="todoPage">
+                                                                <apex:param name="taskId" value="{!todo.Id}" assignTo = "{!taskId}"/>
+                                                        </apex:actionSupport>
+                                                </apex:inputCheckbox>
+                                                <div class="slds-align_absolute-center slds-text-heading_medium">
+                                                        <span style="{! IF(todo.Done__c,'text-decoration: line-through', '')}"> {!todo.Description__c} </span>
+                                                </div>
+                                                <div class="slds-clearfix">
+                                                    <div class="slds-float_right">
                                                         <apex:commandLink action="{!deleteTask}" value="Del" id="deleteLink">
                                                                 <apex:param name="taskId" value="{!todo.Id}" assignTo = "{!taskId}"/>
                                                         </apex:commandLink>
+                                                    </div>
                                                 </div>
-                                        </div>
-                                            
+                                            </div>
+                                        </div>     
                                     </div>    
-                                
                                 </apex:repeat>
                             </div>
                     </apex:form>
