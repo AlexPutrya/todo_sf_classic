@@ -1,8 +1,8 @@
 @isTest
 public with sharing class TodoControllerTest {
-    
+
     @isTest
-    public static void addTaskTest() {
+    static void addTaskTest() {
         TodoController todoController = new ToDoController();
         todoController.taskText = 'Go to market';
         todoController.addTask();
@@ -10,7 +10,7 @@ public with sharing class TodoControllerTest {
     }
 
     @isTest
-    public static void changeDoneTaskTest() {
+    static void changeDoneTaskTest() {
         TodoController todoController = new ToDoController();
         To_do__c todo = new To_do__c(
             Description__c = 'Go to market',
@@ -24,7 +24,7 @@ public with sharing class TodoControllerTest {
     }
 
     @isTest
-    public static void deleteTaskTest(){
+    static void deleteTaskTest(){
         To_do__c todo = new To_do__c(
             Description__c = 'Go to market'
         );
@@ -36,10 +36,40 @@ public with sharing class TodoControllerTest {
     }
 
     @isTest
-    public static void nulifyTest(){
+    static void nulifyTest(){
         TodoController todoController = new ToDoController();
         todoController.taskText = 'Go to market';
         todoController.nulify();
         System.assert(todoController.taskText == '');
+    }
+
+    @isTest
+    static void getTasksSetDateTest() {
+        Date selectedDate = Date.newInstance(2019,9, 17);
+        TodoController todoController = new ToDoController();
+        todoController.selectedDate = selectedDate;
+        List<To_do__c> todos = new List<To_do__c>();
+        for(Integer i=0; i<10; i++){
+            todos.add(new To_do__c(
+                Date__c = selectedDate,
+                Description__c = 'Create project'+i
+            ));
+        }
+        insert todos;
+        System.assertEquals(10, todoController.todos.size() );
+    }
+
+    @isTest
+    static void getTasksNoDateTest() {
+        TodoController todoController = new ToDoController();
+        List<To_do__c> todos = new List<To_do__c>();
+        for(Integer i=0; i<10; i++){
+            todos.add(new To_do__c(
+                Date__c = Date.today(),
+                Description__c = 'Create project'+i
+            ));
+        }
+        insert todos;
+        System.assertEquals(10, todoController.todos.size() );
     }
 }
